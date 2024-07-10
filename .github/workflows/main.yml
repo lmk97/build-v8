@@ -2,7 +2,7 @@ name: Publish v8 static library
 on:
   push:
     tags:
-      - '*'
+      - 'v*'
 
 env:
   V8_VERSION: "12.4"
@@ -22,16 +22,16 @@ jobs:
       matrix:
         platform: [x64]
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
-      - name: Publish release
-        id: publish_release
+      - name: Create release
+        id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.event.release.tag_name }}
-          body: ${{ github.event.release.body }}
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
           draft: false
           prerelease: false
       - name: Setup v8 build tools
@@ -113,16 +113,16 @@ jobs:
       matrix:
         platform: [x64]
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
-      - name: Publish release
-        id: publish_release
+      - name: Create release
+        id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.event.release.tag_name }}
-          body: ${{ github.event.release.body }}
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
           draft: false
           prerelease: false
       - name: Setup v8 build tools
@@ -180,16 +180,16 @@ jobs:
       matrix:
         platform: [x64, arm64]
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
-      - name: Publish release
-        id: publish_release
+      - name: Create release
+        id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.event.release.tag_name }}
-          body: ${{ github.event.release.body }}
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
           draft: false
           prerelease: false
       - name: Setup v8 build tools
@@ -246,16 +246,16 @@ jobs:
       matrix:
         platform: [x64]
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
-      - name: Publish release
-        id: publish_release
+      - name: Create release
+        id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.event.release.tag_name }}
-          body: ${{ github.event.release.body }}
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
           draft: false
           prerelease: false
       - name: Setup python
