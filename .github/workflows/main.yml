@@ -1,8 +1,8 @@
 name: Publish v8 static library
 on:
-  push:
-    tags:
-      - 'v*'
+  release:
+    types:
+      - published
 
 env:
   V8_VERSION: "12.4"
@@ -24,16 +24,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Create release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          draft: false
-          prerelease: false
       - name: Setup v8 build tools
         run: |
           git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
@@ -74,7 +64,7 @@ jobs:
       - name: Build v8 static library
         run: |
           export PATH="$GITHUB_WORKSPACE/depot_tools:${PATH}"
-          cp linux-${{ matrix.platform }}.gn $GITHUB_WORKSPACE/v8/out.gn/${{ matrix.platform }}.release/args.gn
+          cp args.linux.${{ matrix.platform }}.gn $GITHUB_WORKSPACE/v8/out.gn/${{ matrix.platform }}.release/args.gn
           cd $GITHUB_WORKSPACE/v8
           build/linux/sysroot_scripts/install-sysroot.py --arch=${{ matrix.platform }}
           gn gen out.gn/${{ matrix.platform }}.release
@@ -115,16 +105,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Create release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          draft: false
-          prerelease: false
       - name: Setup v8 build tools
         run: |
           git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
@@ -141,7 +121,7 @@ jobs:
       - name: Build v8 static library
         run: |
           export PATH="$GITHUB_WORKSPACE/depot_tools:${PATH}"
-          cp.linux-arm64.gn $GITHUB_WORKSPACE/v8/out.gn/arm64.release/args.gn
+          cp args.linux.arm64.gn $GITHUB_WORKSPACE/v8/out.gn/arm64.release/args.gn
           cd $GITHUB_WORKSPACE/v8
           build/linux/sysroot_scripts/install-sysroot.py --arch=arm64
           gn gen out.gn/arm64.release
@@ -182,16 +162,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Create release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          draft: false
-          prerelease: false
       - name: Setup v8 build tools
         run: |
           git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
@@ -208,7 +178,7 @@ jobs:
       - name: Build v8 static library
         run: |
           export PATH="$GITHUB_WORKSPACE/depot_tools:${PATH}"
-          cp mac-${{ matrix.platform }}.gn $GITHUB_WORKSPACE/v8/out.gn/${{ matrix.platform }}.release/args.gn
+          cp args.mac.${{ matrix.platform }}.gn $GITHUB_WORKSPACE/v8/out.gn/${{ matrix.platform }}.release/args.gn
           cd $GITHUB_WORKSPACE/v8
           gn gen out.gn/${{ matrix.platform }}.release
           ninja -j 4  v8_monolith -C out.gn/${{ matrix.platform }}.release/
@@ -248,16 +218,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Create release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          draft: false
-          prerelease: false
       - name: Setup python
         uses: actions/setup-python@v2
         with:
@@ -283,7 +243,7 @@ jobs:
         run: |
           Set-Location -Path v8
           New-Item -ItemType directory -Path ./out.gn/${{ matrix.platform }}.release/
-          Copy-Item "../win-${{ matrix.platform }}.gn" -Destination "./out.gn/${{ matrix.platform }}.release/args.gn" -force          
+          Copy-Item "../args.win.${{ matrix.platform }}.gn" -Destination "./out.gn/${{ matrix.platform }}.release/args.gn" -force          
           gn gen out.gn/${{ matrix.platform }}.release
           ninja -j 4  v8_monolith -C out.gn/${{ matrix.platform }}.release/
       - name: Compress static library
