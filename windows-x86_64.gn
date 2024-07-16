@@ -1,10 +1,10 @@
 dcheck_always_on = false
 is_debug = false
-target_cpu = "x86_64"
+target_cpu = "x64"
 
 # Additional command-line args:
-target_cpu="x86_64"
-v8_target_cpu="x86_64"
+target_cpu="x64"
+v8_target_cpu="x64"
 v8_use_external_startup_data=false
 v8_enable_future=true
 is_official_build=false

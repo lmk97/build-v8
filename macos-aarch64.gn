@@ -1,11 +1,11 @@
 dcheck_always_on = false
 is_debug = false
-target_cpu = "aarch64"
+target_cpu = "arm64"
 
 # Additional command-line args:
 target_os="mac"
-target_cpu="aarch64"
-v8_target_cpu="aarch64"
+target_cpu="arm64"
+v8_target_cpu="arm64"
 v8_enable_future=true
 is_official_build=false
 is_component_build=false
