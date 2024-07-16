@@ -49,12 +49,22 @@ jobs:
           asset_path: ${{ github.workspace }}/v8-include.tar.gz
           asset_name: v8-include.tar.gz
           asset_content_type: application/gzip
-      - name: Build v8 static library
+      - name: Build x86_64 static library
+        if: ${{ matrix.platform == 'x86_64' }}
         run: |
           export PATH="$GITHUB_WORKSPACE/depot_tools:${PATH}"
           cp linux-${{ matrix.platform }}.gn $GITHUB_WORKSPACE/v8/out.gn/${{ matrix.platform }}.release/args.gn
           cd $GITHUB_WORKSPACE/v8
-          build/linux/sysroot_scripts/install-sysroot.py --arch=${{ matrix.platform }}
+          build/linux/sysroot_scripts/install-sysroot.py --arch=x64
+          gn gen out.gn/${{ matrix.platform }}.release
+          ninja -j 4 v8_monolith -C out.gn/${{ matrix.platform }}.release/
+      - name: Build aarch64 static library
+        if: ${{ matrix.platform == 'aarch64' }}
+        run: |
+          export PATH="$GITHUB_WORKSPACE/depot_tools:${PATH}"
+          cp linux-${{ matrix.platform }}.gn $GITHUB_WORKSPACE/v8/out.gn/${{ matrix.platform }}.release/args.gn
+          cd $GITHUB_WORKSPACE/v8
+          build/linux/sysroot_scripts/install-sysroot.py --arch=arm64
           gn gen out.gn/${{ matrix.platform }}.release
           ninja -j 4 v8_monolith -C out.gn/${{ matrix.platform }}.release/
       - name: Compress v8 static library
@@ -76,7 +86,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [x64, aarch64]
+        platform: [x86_64, aarch64]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -119,7 +129,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [x64]
+        platform: [x86_64]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
