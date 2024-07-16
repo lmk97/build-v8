@@ -1,26 +1,27 @@
 dcheck_always_on = false
 is_debug = false
-target_cpu = "x64"
+target_cpu = "aarch64"
 
 # Additional command-line args:
-target_os="linux"
-target_cpu="x64"
-v8_target_cpu="x64"
+target_os="mac"
+target_cpu="aarch64"
+v8_target_cpu="aarch64"
 v8_enable_future=true
 is_official_build=false
 is_component_build=false
 is_cfi=false
 is_asan=false
-is_clang=false
+is_clang=true
 use_custom_libcxx=false
 use_custom_libcxx_for_host=false
-use_sysroot=true
+use_sysroot=false
 use_gold=false
 is_debug=false
 treat_warnings_as_errors=false
 v8_enable_i18n_support=true
 symbol_level=0
 v8_static_library=true
+v8_monolithic=true
 proprietary_codecs=false
 toolkit_views=false
 use_aura=false

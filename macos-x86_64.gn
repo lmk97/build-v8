@@ -1,11 +1,12 @@
 dcheck_always_on = false
 is_debug = false
-target_cpu = "arm64"
+target_cpu = "x86_64"
 
 # Additional command-line args:
-target_os="linux"
-target_cpu="arm64"
-v8_target_cpu="arm64"
+target_os="mac"
+target_cpu="x86_64"
+v8_target_cpu="x86_64"
+v8_use_external_startup_data=false
 v8_enable_future=true
 is_official_build=false
 is_component_build=false
@@ -14,7 +15,7 @@ is_asan=false
 is_clang=true
 use_custom_libcxx=false
 use_custom_libcxx_for_host=false
-use_sysroot=true
+use_sysroot=false
 use_gold=false
 is_debug=false
 treat_warnings_as_errors=false
@@ -47,7 +48,7 @@ v8_enable_shared_ro_heap=false
 v8_enable_verify_heap=false
 v8_enable_pointer_compression=true
 # v8_enable_maglev=false
-v8_use_external_startup_data=false
+# v8_use_external_startup_data=true
 #v8_use_snapshot=true
 #v8_enable_private_mapping_fork_optimization=true
 # v8_disable_write_barriers=true
