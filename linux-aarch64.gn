@@ -6,7 +6,7 @@ clang_use_chrome_plugins = false
 is_component_build = false
 linux_use_bundled_binutils = false
 use_dummy_lastchange = true
-use_sysroot = false
+use_sysroot = true
 simple_template_names = false
 
 # Minimize size of debuginfo in distributed static library.
@@ -74,7 +74,7 @@ v8_depend_on_icu_data_file = false
 icu_copy_icudata_to_root_build_dir = false
 
 is_debug = false
-is_clang = false
+is_clang = true
 v8_monolithic = true
 v8_static_library = true
 
@@ -88,7 +88,6 @@ treat_warnings_as_errors = false
 v8_enable_i18n_support = true
 proprietary_codecs = false
 toolkit_views = false
-use_gold = false
 use_aura = false
 use_dbus = false
 use_gio = false
