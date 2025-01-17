@@ -19,7 +19,7 @@ v8_enable_sandbox = false
 v8_enable_javascript_promise_hooks = true
 v8_promise_internal_field_count = 1
 v8_use_external_startup_data = false
-v8_use_snapshot = true
+v8_use_snapshot = false
 
 v8_enable_pointer_compression = false
 
@@ -75,7 +75,6 @@ icu_copy_icudata_to_root_build_dir = false
 
 is_debug = false
 is_clang = true
-use_gold = false
 v8_monolithic = true
 v8_static_library = true
 
