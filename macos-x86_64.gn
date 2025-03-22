@@ -29,7 +29,6 @@ v8_enable_private_mapping_fork_optimization = false
 
 is_component_build = false
 is_official_build = false
-is_android = false
 is_debug = false
 is_cfi = false
 is_msan = false
@@ -38,7 +37,6 @@ is_asan = false
 dcheck_always_on = false
 v8_use_zlib = false
 v8_use_external_startup_data = false
-v8_scriptormodule_legacy_lifetime = true
 v8_deprecation_warnings = false
 v8_imminent_deprecation_warnings = false
 v8_depend_on_icu_data_file = false
