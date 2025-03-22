@@ -1,8 +1,9 @@
 name: Publish v8 include files and static library
 on:
-  release:
-    types:
-      - published
+  [push]
+#  release:
+#    types:
+#      - published
 
 env:
   V8_VERSION: "13.5.212.10"
@@ -12,13 +13,13 @@ defaults:
     shell: bash
 
 jobs:
-  build-linux:
+  build-linux-x86_64:
     name: linux
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
-        platform: [x86_64, aarch64]
+        platform: [x86_64]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -36,11 +37,9 @@ jobs:
           gclient sync
           mkdir -p out.gn/${{ matrix.platform }}.release/
       - name: Compress include files
-        if: ${{ matrix.platform == 'x86_64' }}
         run: |
           tar -zcvf v8-include.tar.gz -C v8/include .
       - name: Upload include files
-        if: ${{ matrix.platform == 'x86_64' }}
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -50,20 +49,10 @@ jobs:
           asset_name: v8-include.tar.gz
           asset_content_type: application/gzip
       - name: Build v8 static library for x86_64
-        if: ${{ matrix.platform == 'x86_64' }}
         run: |
           export PATH="$GITHUB_WORKSPACE/depot_tools:${PATH}"
           cp linux-${{ matrix.platform }}.gn $GITHUB_WORKSPACE/v8/out.gn/${{ matrix.platform }}.release/args.gn
           cd $GITHUB_WORKSPACE/v8
-          gn gen out.gn/${{ matrix.platform }}.release
-          ninja -j 4 v8_monolith -C out.gn/${{ matrix.platform }}.release/
-      - name: Build v8 static library for aarch64
-        if: ${{ matrix.platform == 'aarch64' }}
-        run: |
-          export PATH="$GITHUB_WORKSPACE/depot_tools:${PATH}"
-          cp linux-${{ matrix.platform }}.gn $GITHUB_WORKSPACE/v8/out.gn/${{ matrix.platform }}.release/args.gn
-          cd $GITHUB_WORKSPACE/v8
-          build/linux/sysroot_scripts/install-sysroot.py --arch=arm64
           gn gen out.gn/${{ matrix.platform }}.release
           ninja -j 4 v8_monolith -C out.gn/${{ matrix.platform }}.release/
       - name: Compress v8 static library
@@ -79,13 +68,99 @@ jobs:
           asset_name: v8-lib-${{ matrix.platform }}-unknown-linux-gnu.gz
           asset_content_type: application/gzip
 
-  build-macos:
-    name: macos
-    runs-on: macos-latest
+  build-linux-aarch64:
+    name: linux
+    runs-on: ubuntu-22.04-arm
     strategy:
       fail-fast: false
       matrix:
-        platform: [x86_64, aarch64]
+        platform: [aarch64]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Fetch v8 code
+        run: |
+          git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
+          export PATH="$GITHUB_WORKSPACE/depot_tools:${PATH}"
+          gclient
+          fetch v8
+      - name: Checkout and sync
+        run: |
+          export PATH="$GITHUB_WORKSPACE/depot_tools:${PATH}"
+          cd $GITHUB_WORKSPACE/v8
+          git checkout $V8_VERSION
+          gclient sync
+          mkdir -p out.gn/${{ matrix.platform }}.release/
+      - name: Build v8 static library for x86_64
+        run: |
+          export PATH="$GITHUB_WORKSPACE/depot_tools:${PATH}"
+          cp linux-${{ matrix.platform }}.gn $GITHUB_WORKSPACE/v8/out.gn/${{ matrix.platform }}.release/args.gn
+          cd $GITHUB_WORKSPACE/v8
+          gn gen out.gn/${{ matrix.platform }}.release
+          ninja -j 4 v8_monolith -C out.gn/${{ matrix.platform }}.release/
+      - name: Compress v8 static library
+        run: |
+          gzip -9 -c ${{ github.workspace }}/v8/out.gn/${{ matrix.platform }}.release/obj/libv8_monolith.a > v8-lib-${{ matrix.platform }}-unknown-linux-gnu.gz
+      - name: Upload static library
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ github.workspace }}/v8-lib-${{ matrix.platform }}-unknown-linux-gnu.gz
+          asset_name: v8-lib-${{ matrix.platform }}-unknown-linux-gnu.gz
+          asset_content_type: application/gzip
+
+  build-macos-x86_64:
+    name: macos
+    runs-on: macos-13
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [x86_64]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Fetch v8 code
+        run: |
+          git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
+          export PATH="$GITHUB_WORKSPACE/depot_tools:${PATH}"
+          gclient
+          fetch v8
+      - name: Checkout and sync
+        run: |
+          export PATH="$GITHUB_WORKSPACE/depot_tools:${PATH}"
+          cd $GITHUB_WORKSPACE/v8
+          git checkout $V8_VERSION
+          gclient sync
+          mkdir -p out.gn/${{ matrix.platform }}.release/
+      - name: Build v8 static library
+        run: |
+          export PATH="$GITHUB_WORKSPACE/depot_tools:${PATH}"
+          cp macos-${{ matrix.platform }}.gn $GITHUB_WORKSPACE/v8/out.gn/${{ matrix.platform }}.release/args.gn
+          cd $GITHUB_WORKSPACE/v8
+          gn gen out.gn/${{ matrix.platform }}.release
+          ninja -j 4  v8_monolith -C out.gn/${{ matrix.platform }}.release/
+      - name: Compress v8 static library
+        run: |
+          gzip -9 -c ${{ github.workspace }}/v8/out.gn/${{ matrix.platform }}.release/obj/libv8_monolith.a > v8-lib-${{ matrix.platform }}-apple-darwin.gz
+      - name: Upload static library
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ github.workspace }}/v8-lib-${{ matrix.platform }}-apple-darwin.gz
+          asset_name: v8-lib-${{ matrix.platform }}-apple-darwin.gz
+          asset_content_type: application/gzip
+
+  build-macos-aarch64:
+    name: macos
+    runs-on: macos-14
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [aarch64]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3

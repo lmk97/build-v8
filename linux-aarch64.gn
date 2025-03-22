@@ -4,11 +4,11 @@ v8_target_cpu = "arm64"
 
 is_clang = false
 # clang_use_chrome_plugins = false
-use_sysroot = true
+use_sysroot = false
 v8_static_library = true
 v8_monolithic = true
 use_custom_libcxx = false
-# use_custom_libcxx_for_host = false
+use_custom_libcxx_for_host = false
 
 v8_enable_i18n_support = true
 v8_enable_builtins_optimization = true
@@ -47,7 +47,7 @@ v8_imminent_deprecation_warnings = false
 v8_depend_on_icu_data_file = false
 v8_promise_internal_field_count = 1
 v8_typed_array_max_size_in_heap = 0
-symbol_level = 1
+symbol_level = 0
 use_debug_fission = false
 treat_warnings_as_errors = false
 
