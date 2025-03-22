@@ -23,6 +23,7 @@ v8_enable_shared_ro_heap = false
 v8_enable_verify_heap = false
 v8_enable_fuzztest = false
 v8_enable_v8_checks = false
+v8_enable_private_mapping_fork_optimization = false
 
 is_component_build = false
 is_official_build = false
