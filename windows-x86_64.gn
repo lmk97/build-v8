@@ -2,11 +2,13 @@ target_os = "win"
 target_cpu = "x64"
 v8_target_cpu = "x64"
 
-is_clang = false
+is_clang = true
+clang_use_chrome_plugins = false
 use_sysroot = false
-v8_use_snapshot = true
 v8_static_library = true
 v8_monolithic = true
+use_custom_libcxx = false
+# use_custom_libcxx_for_host = false
 
 v8_enable_i18n_support = true
 v8_enable_builtins_optimization = true
@@ -46,13 +48,11 @@ v8_depend_on_icu_data_file = false
 v8_promise_internal_field_count = 1
 v8_typed_array_max_size_in_heap = 0
 symbol_level = 1
-use_custom_libcxx = false
-use_custom_libcxx_for_host = false
 use_debug_fission = false
 treat_warnings_as_errors = false
 
+# v8_use_snapshot = true
 # v8_enable_shared_ro_heap = false
 # proprietary_codecs = false
 # toolkit_views = false
 # use_dummy_lastchange = true
-# clang_use_chrome_plugins = false
