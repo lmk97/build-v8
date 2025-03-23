@@ -5,7 +5,6 @@ v8_target_cpu = "arm64"
 is_clang = true
 use_sysroot = false
 v8_use_snapshot = true
-clang_base_path = "/usr/bin/clang"
 
 is_debug = false
 is_official_build = false
@@ -29,7 +28,7 @@ use_gio = false
 use_glib = false
 use_ozone = false
 use_udev = false
-clang_use_chrome_plugins = false
+#clang_use_chrome_plugins = false
 v8_deprecation_warnings = false
 v8_enable_gdbjit = false
 v8_imminent_deprecation_warnings = false
