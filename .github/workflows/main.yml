@@ -6,7 +6,7 @@ on:
 #      - published
 
 env:
-  V8_VERSION: "13.2.152.42"
+  V8_VERSION: "13.0.245.25"
 
 defaults:
   run:
