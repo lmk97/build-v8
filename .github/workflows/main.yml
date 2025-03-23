@@ -13,6 +13,38 @@ defaults:
     shell: bash
 
 jobs:
+  build-linux-emu:
+    name: linux
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [x86_64]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Fetch v8 code
+        run: |
+          git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
+          export PATH="$GITHUB_WORKSPACE/depot_tools:${PATH}"
+          gclient
+          fetch v8
+      - name: Checkout and sync
+        run: |
+          export PATH="$GITHUB_WORKSPACE/depot_tools:${PATH}"
+          cd $GITHUB_WORKSPACE/v8
+          git checkout $V8_VERSION
+          gclient sync
+          mkdir -p out.gn/${{ matrix.platform }}.release/
+      - name: Build v8 static library
+        run: |
+          export PATH="$GITHUB_WORKSPACE/depot_tools:${PATH}"
+          cp linux-${{ matrix.platform }}.gn $GITHUB_WORKSPACE/v8/out.gn/${{ matrix.platform }}.release/args.gn
+          cd $GITHUB_WORKSPACE/v8
+          build/linux/sysroot_scripts/install-sysroot.py --arch=arm64
+          gn gen out.gn/${{ matrix.platform }}.release
+          ninja -j 4 v8_monolith -C out.gn/${{ matrix.platform }}.release/
+
   build-linux-aarch64:
     name: linux
     runs-on: ubuntu-22.04-arm
@@ -41,5 +73,6 @@ jobs:
           export PATH="$GITHUB_WORKSPACE/depot_tools:${PATH}"
           cp linux-${{ matrix.platform }}.gn $GITHUB_WORKSPACE/v8/out.gn/${{ matrix.platform }}.release/args.gn
           cd $GITHUB_WORKSPACE/v8
+          build/linux/sysroot_scripts/install-sysroot.py --arch=arm64
           gn gen out.gn/${{ matrix.platform }}.release
           ninja -j 4 v8_monolith -C out.gn/${{ matrix.platform }}.release/
