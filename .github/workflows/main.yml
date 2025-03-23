@@ -6,7 +6,7 @@ on:
 #      - published
 
 env:
-  V8_VERSION: "13.0.245.25"
+  V8_VERSION: "13.2.152.42"
 
 defaults:
   run:
@@ -42,16 +42,4 @@ jobs:
           cp macos-${{ matrix.platform }}.gn $GITHUB_WORKSPACE/v8/out.gn/${{ matrix.platform }}.release/args.gn
           cd $GITHUB_WORKSPACE/v8
           gn gen out.gn/${{ matrix.platform }}.release
-          ninja -j 4  v8_monolith -C out.gn/${{ matrix.platform }}.release/
-      - name: Compress v8 static library
-        run: |
-          gzip -9 -c ${{ github.workspace }}/v8/out.gn/${{ matrix.platform }}.release/obj/libv8_monolith.a > v8-lib-${{ matrix.platform }}-apple-darwin.gz
-      - name: Upload static library
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ${{ github.workspace }}/v8-lib-${{ matrix.platform }}-apple-darwin.gz
-          asset_name: v8-lib-${{ matrix.platform }}-apple-darwin.gz
-          asset_content_type: application/gzip
+          ninja -j 4 v8_monolith -C out.gn/${{ matrix.platform }}.release/
