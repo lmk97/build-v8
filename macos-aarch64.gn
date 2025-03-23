@@ -5,7 +5,7 @@ v8_target_cpu = "arm64"
 is_clang = true
 use_sysroot = false
 v8_use_snapshot = true
-clang_base_path = /usr/bin/clang
+clang_base_path = "/usr/bin/clang"
 
 is_debug = false
 is_official_build = false
