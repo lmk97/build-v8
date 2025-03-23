@@ -13,49 +13,6 @@ defaults:
     shell: bash
 
 jobs:
-  build-linux-aarch64:
-    name: linux
-    runs-on: ubuntu-22.04-arm
-    strategy:
-      fail-fast: false
-      matrix:
-        platform: [aarch64]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Fetch v8 code
-        run: |
-          git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
-          export PATH="$GITHUB_WORKSPACE/depot_tools:${PATH}"
-          gclient
-          fetch v8
-      - name: Checkout and sync
-        run: |
-          export PATH="$GITHUB_WORKSPACE/depot_tools:${PATH}"
-          cd $GITHUB_WORKSPACE/v8
-          git checkout $V8_VERSION
-          gclient sync
-          mkdir -p out.gn/${{ matrix.platform }}.release/
-      - name: Build v8 static library
-        run: |
-          export PATH="$GITHUB_WORKSPACE/depot_tools:${PATH}"
-          cp linux-${{ matrix.platform }}.gn $GITHUB_WORKSPACE/v8/out.gn/${{ matrix.platform }}.release/args.gn
-          cd $GITHUB_WORKSPACE/v8
-          gn gen out.gn/${{ matrix.platform }}.release
-          ninja -j 4 v8_monolith -C out.gn/${{ matrix.platform }}.release/
-      - name: Compress v8 static library
-        run: |
-          gzip -9 -c ${{ github.workspace }}/v8/out.gn/${{ matrix.platform }}.release/obj/libv8_monolith.a > v8-lib-${{ matrix.platform }}-unknown-linux-gnu.gz
-      - name: Upload static library
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ${{ github.workspace }}/v8-lib-${{ matrix.platform }}-unknown-linux-gnu.gz
-          asset_name: v8-lib-${{ matrix.platform }}-unknown-linux-gnu.gz
-          asset_content_type: application/gzip
-
   build-macos-aarch64:
     name: macos
     runs-on: macos-14
