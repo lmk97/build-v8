@@ -41,6 +41,5 @@ jobs:
           export PATH="$GITHUB_WORKSPACE/depot_tools:${PATH}"
           cp linux-${{ matrix.platform }}.gn $GITHUB_WORKSPACE/v8/out.gn/${{ matrix.platform }}.release/args.gn
           cd $GITHUB_WORKSPACE/v8
-          build/linux/sysroot_scripts/install-sysroot.py --arch=arm64
           gn gen out.gn/${{ matrix.platform }}.release
           ninja -j 4 v8_monolith -C out.gn/${{ matrix.platform }}.release/
