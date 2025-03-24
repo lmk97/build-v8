@@ -4,7 +4,7 @@ v8_target_cpu = "arm64"
 
 is_clang = true
 use_sysroot = true
-use_custom_libcxx = false
+use_custom_libcxx = true
 # line_tables_only = false
 
 is_debug = false
