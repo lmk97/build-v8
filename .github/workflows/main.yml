@@ -73,7 +73,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [x86_64]
+        platform: [aarch64]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
