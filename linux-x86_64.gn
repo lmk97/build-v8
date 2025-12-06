@@ -3,9 +3,8 @@ target_cpu = "x64"
 v8_target_cpu = "x64"
 
 is_clang = true
-use_custom_libcxx = true
+use_custom_libcxx = false
 use_sysroot = false
-cflags_cc = ["-fno-rtti", "-fno-exceptions"]
 
 is_debug = false
 is_component_build = false
