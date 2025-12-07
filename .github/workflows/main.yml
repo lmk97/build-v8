@@ -1,9 +1,9 @@
 name: Publish v8 include files and static library
 on:
    [push]
-#  release:
-#    types:
-#      - published
+  release:
+    types:
+      - published
 
 env:
   V8_VERSION: "14.4.258.6"
@@ -36,6 +36,18 @@ jobs:
           git checkout $V8_VERSION
           gclient sync
           mkdir -p out.gn/${{ matrix.platform }}.release/
+      - name: Compress include files
+        run: |
+          tar -zcvf v8-include.tar.gz -C v8/include .
+      - name: Upload include files
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ github.workspace }}/v8-include.tar.gz
+          asset_name: v8-include.tar.gz
+          asset_content_type: application/gzip
       - name: Build v8 static library
         run: |
           export PATH="$GITHUB_WORKSPACE/depot_tools:${PATH}"
@@ -43,5 +55,16 @@ jobs:
           cd $GITHUB_WORKSPACE/v8
           gn gen out.gn/${{ matrix.platform }}.release
           gn args out.gn/${{ matrix.platform }}.release --list
-#          gn desc out.gn/${{ matrix.platform }}.release :v8_monolith
-#          ninja -j 4 v8_monolith -C out.gn/${{ matrix.platform }}.release/
+          ninja -j 4 v8_monolith -C out.gn/${{ matrix.platform }}.release/
+      - name: Compress v8 static library
+        run: |
+          gzip -9 -c ${{ github.workspace }}/v8/out.gn/${{ matrix.platform }}.release/obj/libv8_monolith.a > v8-lib-${{ matrix.platform }}-unknown-linux-gnu.gz
+      - name: Upload static library
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ github.workspace }}/v8-lib-${{ matrix.platform }}-unknown-linux-gnu.gz
+          asset_name: v8-lib-${{ matrix.platform }}-unknown-linux-gnu.gz
+          asset_content_type: application/gzip
