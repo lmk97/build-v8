@@ -8,6 +8,7 @@ use_sysroot = false
 
 is_debug = false
 is_component_build = false
+is_official_build = false
 dcheck_always_on = false
 use_custom_libcxx_for_host = false
 treat_warnings_as_errors = false
