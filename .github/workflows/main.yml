@@ -44,6 +44,7 @@ jobs:
           gn gen out.gn/${{ matrix.platform }}.release
           gn desc out.gn/${{ matrix.platform }}.release :v8_monolith
           ninja -j 4 v8_monolith -C out.gn/${{ matrix.platform }}.release/
+          nm -gC out.gn/${{ matrix.platform }}.release/obj/libv8_monolith.a | grep "U " | grep "std::" | head -n 128
       - name: Compress v8 static library
         run: |
           gzip -9 -c ${{ github.workspace }}/v8/out.gn/${{ matrix.platform }}.release/obj/libv8_monolith.a > v8-lib-${{ matrix.platform }}-unknown-linux-gnu.gz

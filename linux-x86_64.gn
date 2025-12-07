@@ -3,7 +3,7 @@ target_cpu = "x64"
 v8_target_cpu = "x64"
 
 is_clang = true
-use_custom_libcxx = false
+use_custom_libcxx = true
 use_sysroot = false
 
 is_debug = false
@@ -23,7 +23,6 @@ v8_enable_builtins_optimization = true
 strip_debug_info = true
 
 clang_use_chrome_plugins = false
-linux_use_bundled_binutils = false
 use_dummy_lastchange = true
 simple_template_names = false
 
