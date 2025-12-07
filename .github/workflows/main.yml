@@ -1,6 +1,6 @@
 name: Publish v8 include files and static library
 on:
-   [push]
+#   [push]
   release:
     types:
       - published
