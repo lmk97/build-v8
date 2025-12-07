@@ -7,8 +7,7 @@ use_custom_libcxx = true
 use_sysroot = false
 
 is_debug = false
-is_component_build = false
-is_official_build = false
+is_official_build = true
 dcheck_always_on = false
 use_custom_libcxx_for_host = false
 treat_warnings_as_errors = false
@@ -18,11 +17,10 @@ v8_static_library = true
 v8_monolithic = true
 use_glib = false
 v8_deprecation_warnings = false
-v8_imminent_deprecation_warnings = false
 v8_enable_builtins_optimization = true
-strip_debug_info = true
 
 clang_use_chrome_plugins = false
+is_component_build = false
 use_dummy_lastchange = true
 simple_template_names = false
 
@@ -36,6 +34,8 @@ v8_promise_internal_field_count = 1
 v8_use_external_startup_data = false
 
 v8_enable_pointer_compression = false
+
+v8_imminent_deprecation_warnings = false
 
 # This flag speeds up the performance of fork/execve on Linux systems for
 # embedders which use it (like Node.js). It works by marking the pages that
