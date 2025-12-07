@@ -42,6 +42,6 @@ jobs:
           cp linux-${{ matrix.platform }}.gn $GITHUB_WORKSPACE/v8/out.gn/${{ matrix.platform }}.release/args.gn
           cd $GITHUB_WORKSPACE/v8
           gn gen out.gn/${{ matrix.platform }}.release
-          gn args --list out.gn/${{ matrix.platform }}.release
-          gn desc out.gn/${{ matrix.platform }}.release :v8_monolith
+          gn args out.gn/${{ matrix.platform }}.release --list
+#          gn desc out.gn/${{ matrix.platform }}.release :v8_monolith
 #          ninja -j 4 v8_monolith -C out.gn/${{ matrix.platform }}.release/

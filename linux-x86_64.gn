@@ -4,6 +4,7 @@ v8_target_cpu = "x64"
 
 is_clang = true
 use_custom_libcxx = true
+libcxx_is_shared = false
 use_sysroot = false
 
 is_debug = false
