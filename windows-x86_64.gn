@@ -18,6 +18,7 @@ v8_monolithic = true
 use_glib = false
 v8_deprecation_warnings = false
 v8_enable_builtins_optimization = true
+chrome_pgo_phase = 0
 
 clang_use_chrome_plugins = false
 is_component_build = false
