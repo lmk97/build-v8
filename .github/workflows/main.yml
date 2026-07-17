@@ -25,6 +25,8 @@ jobs:
         uses: actions/checkout@v3
       - name: Fetch v8 code
         run: |
+          cat /etc/os-release
+          uname -a
           git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
           export PATH="$GITHUB_WORKSPACE/depot_tools:${PATH}"
           gclient
@@ -43,6 +45,7 @@ jobs:
           cd $GITHUB_WORKSPACE/v8
           gn gen out.gn/${{ matrix.platform }}.release
           gn args out.gn/${{ matrix.platform }}.release --list
-          ninja -j 4 v8_monolith -C out.gn/${{ matrix.platform }}.release/
-          ls out.gn/${{ matrix.platform }}.release
-          find out.gn/${{ matrix.platform }}.release -name "*libc++*.a"
+          gn desc out.gn/${{ matrix.platform }}.release //:v8_monolith
+#          ninja -j 4 v8_monolith -C out.gn/${{ matrix.platform }}.release/
+#          ls out.gn/${{ matrix.platform }}.release
+#          find out.gn/${{ matrix.platform }}.release -name "*libc++*.a"
