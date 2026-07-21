@@ -48,6 +48,6 @@ jobs:
           gn args out.gn/${{ matrix.platform }}.release --list
           gn ls out.gn/${{ matrix.platform }}.release //:*
           gn desc out.gn/${{ matrix.platform }}.release //:v8_monolith
-#          ninja -j 4 v8_monolith -C out.gn/${{ matrix.platform }}.release/
-#          ls out.gn/${{ matrix.platform }}.release
-#          find out.gn/${{ matrix.platform }}.release -name "*libc++*.a"
+          ninja -j 4 v8_monolith -C out.gn/${{ matrix.platform }}.release/
+          ls out.gn/${{ matrix.platform }}.release
+          find out.gn/${{ matrix.platform }}.release -name "*libc++*.a"
