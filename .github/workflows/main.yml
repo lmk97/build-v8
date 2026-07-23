@@ -42,12 +42,22 @@ jobs:
           cp linux-${{ matrix.platform }}.gn $GITHUB_WORKSPACE/v8/out.gn/${{ matrix.platform }}.release/args.gn
           cd $GITHUB_WORKSPACE/v8
           gn gen out.gn/${{ matrix.platform }}.release
+          echo "------------------------------------------------------------------"
           cat /etc/os-release
+          echo "------------------------------------------------------------------"
           uname -a
+          echo "------------------------------------------------------------------"
           third_party/llvm-build/Release+Asserts/bin/clang -v
+          echo "------------------------------------------------------------------"
+          cat build/linux/sysroot_scripts/sysroots.json
+          echo "------------------------------------------------------------------"
           gn args out.gn/${{ matrix.platform }}.release --list
+          echo "------------------------------------------------------------------"
           gn ls out.gn/${{ matrix.platform }}.release //:*
+          echo "------------------------------------------------------------------"
           gn desc out.gn/${{ matrix.platform }}.release //:v8_monolith
+          echo "------------------------------------------------------------------"
           ninja -j 4 v8_monolith -C out.gn/${{ matrix.platform }}.release/
           ls out.gn/${{ matrix.platform }}.release
+          echo "------------------------------------------------------------------"
           find out.gn/${{ matrix.platform }}.release -name "*libc++*.a"
