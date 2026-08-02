@@ -1,4 +1,4 @@
-name: Publish v8 include files and static library
+name: C API for V8 monolithic static library
 on:
    [push]
 #  release:
@@ -6,7 +6,7 @@ on:
 #      - published
 
 env:
-  V8_VERSION: "14.4.258.6"
+  V8_VERSION: '15.2.124.4'
 
 defaults:
   run:
@@ -20,44 +20,43 @@ jobs:
       fail-fast: false
       matrix:
         platform: [x86_64]
+    env:
+      V8_OS: linux
+      V8_ARCH: x86_64
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Fetch v8 code
+      - name: Source code checkout
+      - uses: actions/checkout@v7
+        with:
+          path: ${{ github.event.repository.name }}
+      - name: V8 fetch and build
         run: |
           git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
-          export PATH="$GITHUB_WORKSPACE/depot_tools:${PATH}"
+          export PATH="$PATH:$GITHUB_WORKSPACE/depot_tools"
           gclient
           fetch v8
-      - name: Checkout and sync
-        run: |
-          export PATH="$GITHUB_WORKSPACE/depot_tools:${PATH}"
           cd $GITHUB_WORKSPACE/v8
           git checkout $V8_VERSION
           gclient sync
-          mkdir -p out.gn/${{ matrix.platform }}.release/
-      - name: Build v8 static library
+          mkdir "build-$V8_OS-$V8_ARCH"
+          cp "../${{ github.event.repository.name }}/$V8_OS-$V8_ARCH.gn" "build-$V8_OS-$V8_ARCH/args.gn"
+          gn gen "build-$V8_OS-$V8_ARCH"
+          ninja -j 4 v8_monolith -C "build-$V8_OS-$V8_ARCH"
+      - name: V8 logs
         run: |
-          export PATH="$GITHUB_WORKSPACE/depot_tools:${PATH}"
-          cp linux-${{ matrix.platform }}.gn $GITHUB_WORKSPACE/v8/out.gn/${{ matrix.platform }}.release/args.gn
           cd $GITHUB_WORKSPACE/v8
-          gn gen out.gn/${{ matrix.platform }}.release
-          echo "------------------------------------------------------------------"
+          echo "----------------- os-release      -----------------"
           cat /etc/os-release
-          echo "------------------------------------------------------------------"
+          echo "----------------- uname           -----------------"
           uname -a
-          echo "------------------------------------------------------------------"
+          echo "----------------- clang version   -----------------"
           third_party/llvm-build/Release+Asserts/bin/clang -v
-          echo "------------------------------------------------------------------"
+          echo "----------------- sysroots.json   -----------------"
           cat build/linux/sysroot_scripts/sysroots.json
-          echo "------------------------------------------------------------------"
-          gn args out.gn/${{ matrix.platform }}.release --list
-          echo "------------------------------------------------------------------"
-          gn ls out.gn/${{ matrix.platform }}.release //:*
-          echo "------------------------------------------------------------------"
-          gn desc out.gn/${{ matrix.platform }}.release //:v8_monolith
-          echo "------------------------------------------------------------------"
-          ninja -j 4 v8_monolith -C out.gn/${{ matrix.platform }}.release/
-          ls out.gn/${{ matrix.platform }}.release
-          echo "------------------------------------------------------------------"
+          echo "----------------- gn args list    -----------------"
+          gn args "build-$V8_OS-$V8_ARCH" --list
+          echo "----------------- gn ls //:*      -----------------"
+          gn ls "build-$V8_OS-$V8_ARCH" //:*
+          echo "----------------- gn desc         -----------------"
+          gn desc "build-$V8_OS-$V8_ARCH" //:v8_monolith
+          echo "----------------- find *libc++*.a -----------------"
           find out.gn/${{ matrix.platform }}.release -name "*libc++*.a"
