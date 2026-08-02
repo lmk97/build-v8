@@ -31,6 +31,7 @@ jobs:
       - name: V8 fetch and build
         run: |
           git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
+          export DEPOT_TOOLS_METRICS=0
           export PATH="$PATH:$GITHUB_WORKSPACE/depot_tools"
           gclient
           fetch v8
