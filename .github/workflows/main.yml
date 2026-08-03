@@ -28,7 +28,6 @@ jobs:
           wget https://github.com/llvm/llvm-project/releases/download/llvmorg-22.1.0/LLVM-22.1.0-Linux-ARM64.tar.xz
           mkdir llvm-aarch64
           tar -xvf LLVM-22.1.0-Linux-ARM64.tar.xz -C ./llvm-aarch64 --strip-components=1
-          ./llvm-aarch64/bin/clang --version
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
           export DEPOT_TOOLS_METRICS=0
@@ -54,7 +53,6 @@ jobs:
           echo "----------------- uname           -----------------"
           uname -a
           echo "----------------- clang version   -----------------"
-#          third_party/llvm-build/Release+Asserts/bin/clang -v
           $GITHUB_WORKSPACE/llvm-aarch64/bin/clang -v
           echo "----------------- sysroots.json   -----------------"
           cat build/linux/sysroot_scripts/sysroots.json
