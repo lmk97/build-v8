@@ -36,7 +36,7 @@ jobs:
           gclient sync
           mkdir "build-$V8_OS-$V8_ARCH"
           cp "../${{ github.event.repository.name }}/$V8_OS-$V8_ARCH.gn" "build-$V8_OS-$V8_ARCH/args.gn"
-          gn gen "build-$V8_OS-$V8_ARCH" --args="$HOME/.rustup/toolchains/stable-aarch64-unknown-linux-gnu"
+          gn gen "build-$V8_OS-$V8_ARCH" --args='rust_sysroot_absolute="$HOME/.rustup/toolchains/stable-aarch64-unknown-linux-gnu"'
           ninja -j 4 v8_monolith -C "build-$V8_OS-$V8_ARCH"
       - name: V8 logs
         run: |
