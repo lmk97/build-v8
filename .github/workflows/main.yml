@@ -27,7 +27,7 @@ jobs:
         run: |
           wget https://apt.llvm.org/llvm.sh
           chmod +x llvm.sh
-          sudo ./llvm.sh 23
+          sudo ./llvm.sh 23 all
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
           export DEPOT_TOOLS_METRICS=0
