@@ -29,5 +29,4 @@ jobs:
           chmod +x llvm.sh
           sudo ./llvm.sh 23 all
           /usr/lib/llvm-23/bin/clang -v
-          ls /usr/lib/llvm-23/lib/clang/23/lib
           find /usr/lib/llvm-23 "libclang_rt.builtins.a"
