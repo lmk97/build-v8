@@ -44,6 +44,7 @@ jobs:
           ninja -j 4 v8_monolith -C "build-$V8_OS-$V8_ARCH"
       - name: V8 logs
         run: |
+          export PATH="$PATH:$GITHUB_WORKSPACE/depot_tools"
           cd $GITHUB_WORKSPACE/v8
           echo "----------------- os-release      -----------------"
           cat /etc/os-release
