@@ -37,7 +37,7 @@ jobs:
           mkdir "build-$V8_OS-$V8_ARCH"
           cp "../${{ github.event.repository.name }}/$V8_OS-$V8_ARCH.gn" "build-$V8_OS-$V8_ARCH/args.gn"
           echo 'rust_sysroot_absolute="'$(rustc --print sysroot)'"' > "build-$V8_OS-$V8_ARCH/args.gn"
-          echo 'rustc_revision="b998449636a48e2c4a362809085b600a0174e1f2-5"' > "build-$V8_OS-$V8_ARCH/args.gn"
+          echo 'rustc_version="b998449636a48e2c4a362809085b600a0174e1f2-5"' > "build-$V8_OS-$V8_ARCH/args.gn"
           gn gen "build-$V8_OS-$V8_ARCH"
           ninja -j 4 v8_monolith -C "build-$V8_OS-$V8_ARCH"
       - name: V8 logs
