@@ -41,6 +41,7 @@ jobs:
           mkdir "build-$V8_OS-$V8_ARCH"
           cp "../${{ github.event.repository.name }}/$V8_OS-$V8_ARCH.gn" "build-$V8_OS-$V8_ARCH/args.gn"
           echo 'clang_base_path="'$GITHUB_WORKSPACE/llvm-aarch64'"' >> "build-$V8_OS-$V8_ARCH/args.gn"
+          echo 'clang_version="22"' >> "build-$V8_OS-$V8_ARCH/args.gn"
           echo 'rust_sysroot_absolute="'$(rustc --print sysroot)'"' >> "build-$V8_OS-$V8_ARCH/args.gn"
           echo 'rust_force_head_revision=true' >> "build-$V8_OS-$V8_ARCH/args.gn"
           gn gen "build-$V8_OS-$V8_ARCH"
