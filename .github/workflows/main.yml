@@ -28,6 +28,7 @@ jobs:
           wget https://github.com/llvm/llvm-project/releases/download/llvmorg-22.1.0/LLVM-22.1.0-Linux-ARM64.tar.xz
           mkdir llvm-aarch64
           tar -xvf LLVM-22.1.0-Linux-ARM64.tar.xz -C ./llvm-aarch64 --strip-components=1
+          rm -rf LLVM-22.1.0-Linux-ARM64.tar.xz
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
           export DEPOT_TOOLS_METRICS=0
@@ -39,7 +40,7 @@ jobs:
           gclient sync
           mkdir "build-$V8_OS-$V8_ARCH"
           cp "../${{ github.event.repository.name }}/$V8_OS-$V8_ARCH.gn" "build-$V8_OS-$V8_ARCH/args.gn"
-          echo 'clang_base_path="$GITHUB_WORKSPACE/llvm-aarch64"' >> "build-$V8_OS-$V8_ARCH/args.gn"
+          echo 'clang_base_path="'$GITHUB_WORKSPACE/llvm-aarch64'"' >> "build-$V8_OS-$V8_ARCH/args.gn"
           echo 'rust_sysroot_absolute="'$(rustc --print sysroot)'"' >> "build-$V8_OS-$V8_ARCH/args.gn"
           echo 'rust_force_head_revision=true' >> "build-$V8_OS-$V8_ARCH/args.gn"
           gn gen "build-$V8_OS-$V8_ARCH"
