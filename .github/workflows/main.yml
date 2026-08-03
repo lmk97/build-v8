@@ -13,16 +13,11 @@ defaults:
     shell: bash
 
 jobs:
-  build-linux-x86_64:
-    name: linux
-    runs-on: ubuntu-22.04
-    strategy:
-      fail-fast: false
-      matrix:
-        platform: [x86_64]
+  build-on-linux-aarch64:
+    runs-on: ubuntu-22.04-arm
     env:
       V8_OS: linux
-      V8_ARCH: x86_64
+      V8_ARCH: aarch64
     steps:
       - name: Source code checkout
         uses: actions/checkout@v7
@@ -61,4 +56,4 @@ jobs:
           echo "----------------- gn desc         -----------------"
           gn desc "build-$V8_OS-$V8_ARCH" //:v8_monolith
           echo "----------------- find *libc++*.a -----------------"
-          find out.gn/${{ matrix.platform }}.release -name "*libc++*.a"
+          find "build-$V8_OS-$V8_ARCH" -name "*libc++*.a"
