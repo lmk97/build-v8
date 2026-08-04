@@ -29,7 +29,7 @@ jobs:
           chmod +x llvm.sh
           sudo ./llvm.sh 23
           sudo mkdir -p "/usr/lib/llvm-23/lib/clang/23/lib/aarch64-unknown-linux-gnu"
-          sudo cp -f "/usr/lib/llvm-23/lib/clang/23/lib/linux/libclang_rt.builtins-aarch64.a" "/usr/lib/llvm-23/lib/clang/23/lib/aarch64-unknown-linux-gnu"
+          sudo cp -f "/usr/lib/llvm-23/lib/clang/23/lib/linux/libclang_rt.builtins-aarch64.a" "/usr/lib/llvm-23/lib/clang/23/lib/aarch64-unknown-linux-gnu/libclang_rt.builtins.a"
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
           export DEPOT_TOOLS_METRICS=0
