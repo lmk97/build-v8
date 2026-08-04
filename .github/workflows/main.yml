@@ -28,7 +28,6 @@ jobs:
           wget https://apt.llvm.org/llvm.sh
           chmod +x llvm.sh
           sudo ./llvm.sh 23
-          sudo apt-get install libclang-rt-23-dev
           echo '-------------- clang -v              --------------'
           /usr/lib/llvm-23/bin/clang -v
           echo '-------------- find /usr/lib/llvm-23 --------------'
