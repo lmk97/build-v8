@@ -28,13 +28,8 @@ jobs:
           wget https://apt.llvm.org/llvm.sh
           chmod +x llvm.sh
           sudo ./llvm.sh 23
-          echo '-------------- clang -v              --------------'
-          /usr/lib/llvm-23/bin/clang -v
-          echo '-------------- find /usr/lib/llvm-23 --------------'
-          find /usr/lib/llvm-23 -name "libclang_rt.builtins*.a"
-          echo '-------------- find /usr             --------------'
-          find /usr -name "libclang_rt.builtins*.a"
-          echo '---------------------------------------------------'
+          mkdir -p "/usr/lib/llvm-23/lib/clang/23/lib/aarch64-unknown-linux-gnu"
+          cp -f "/usr/lib/llvm-23/lib/clang/23/lib/linux/libclang_rt.builtins-aarch64.a" "/usr/lib/llvm-23/lib/clang/23/lib/aarch64-unknown-linux-gnu"
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
           export DEPOT_TOOLS_METRICS=0
@@ -61,7 +56,7 @@ jobs:
           echo "----------------- uname           -----------------"
           uname -a
           echo "----------------- clang version   -----------------"
-          $GITHUB_WORKSPACE/llvm-aarch64/bin/clang -v
+          /usr/lib/llvm-23/bin/clang -v
           echo "----------------- sysroots.json   -----------------"
           cat build/linux/sysroot_scripts/sysroots.json
           echo "----------------- gn args list    -----------------"
