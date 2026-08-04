@@ -29,6 +29,9 @@ jobs:
           chmod +x llvm.sh
           sudo ./llvm.sh 23
           sudo apt-get install libclang-rt-23-dev
+          echo '-------------- clang -v              --------------'
           /usr/lib/llvm-23/bin/clang -v
+          echo '-------------- find /usr/lib/llvm-23 --------------'
           find /usr/lib/llvm-23 -name "libclang_rt.builtins.a"
-          
+          echo '-------------- find /usr             --------------'
+          find /usr -name "libclang_rt.builtins.a"
