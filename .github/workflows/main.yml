@@ -30,4 +30,5 @@ jobs:
           sudo ./llvm.sh 23
           sudo apt-get install libclang-rt-23-dev
           /usr/lib/llvm-23/bin/clang -v
-          find /usr/lib/llvm-23 "libclang_rt.builtins.a"
+          find /usr/lib/llvm-23 -name "libclang_rt.builtins.a"
+          
