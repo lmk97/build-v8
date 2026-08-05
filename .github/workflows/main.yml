@@ -31,3 +31,7 @@ jobs:
           echo "------------------------------------"
           find /usr/lib/llvm-23/lib -name "libclang*.so*"
           echo "------------------------------------"
+          sudo apt install -y libclang-23-dev
+          echo "------------------------------------"
+          find /usr/lib/llvm-23/lib -name "libclang*.so*"
+          echo "------------------------------------"
