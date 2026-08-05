@@ -34,7 +34,7 @@ jobs:
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           rustup target add aarch64-unknown-linux-gnu
           rustup component add rustfmt
-          cargo install bindgen-cli --no-default-features --feature static
+          cargo install bindgen-cli --no-default-features --features static
           git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
           export DEPOT_TOOLS_METRICS=0
           export PATH="$PATH:$HOME/.cargo/env:$GITHUB_WORKSPACE/depot_tools"
