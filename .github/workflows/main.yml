@@ -31,9 +31,11 @@ jobs:
           sudo apt install -y libclang-23-dev
           sudo mkdir -p "/usr/lib/llvm-23/lib/clang/23/lib/aarch64-unknown-linux-gnu"
           sudo cp -f "/usr/lib/llvm-23/lib/clang/23/lib/linux/libclang_rt.builtins-aarch64.a" "/usr/lib/llvm-23/lib/clang/23/lib/aarch64-unknown-linux-gnu/libclang_rt.builtins.a"
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain nightly
-          cargo install bindgen-cli
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+          rustup install nightly-2024-06-01
+          rustup default nightly-2024-06-01
           rustup component add rustfmt
+          cargo install bindgen-cli
           mkdir -p "$HOME/.cargo/lib"
           ln -sf "/usr/lib/llvm-23/lib/libclang*.so*" "$HOME/.cargo/lib"
           git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
