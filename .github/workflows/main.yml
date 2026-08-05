@@ -34,6 +34,7 @@ jobs:
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           rustup install nightly-2024-06-01
           rustup default nightly-2024-06-01
+          rustup target add aarch64-unknown-linux-gnu
           rustup component add rustfmt
           cargo install bindgen-cli
           mkdir -p "$HOME/.cargo/lib"
@@ -54,6 +55,9 @@ jobs:
           echo "rust_bindgen_root=\"$HOME/.cargo\"" >> "build-$V8_OS-$V8_ARCH/args.gn"
           echo "rust_force_head_revision=true" >> "build-$V8_OS-$V8_ARCH/args.gn"
           echo "rustc_version=\"$(rustc -V)\"" >> "build-$V8_OS-$V8_ARCH/args.gn"
+          export RUST_SYSROOT=$(rustc --print sysroot)
+          export LDFLAGS=""
+          export RUSTFLAGS=""
           gn gen "build-$V8_OS-$V8_ARCH"
           ninja -j 4 v8_monolith -C "build-$V8_OS-$V8_ARCH"
       - name: V8 logs
