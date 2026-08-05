@@ -41,6 +41,7 @@ jobs:
           export DEPOT_TOOLS_METRICS=0
           export PATH="$PATH:$HOME/.cargo/env:$GITHUB_WORKSPACE/depot_tools"
           export LIBCLANG_PATH=/usr/lib/llvm-23/lib
+          export RUSTC_BOOTSTRAP=1
           gclient
           fetch v8
           cd $GITHUB_WORKSPACE/v8
