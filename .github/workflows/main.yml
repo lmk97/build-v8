@@ -55,12 +55,18 @@ jobs:
           echo "rust_force_head_revision=true" >> "build-$V8_OS-$V8_ARCH/args.gn"
           echo "rustc_version=\"$(rustc -V)\"" >> "build-$V8_OS-$V8_ARCH/args.gn"
           export RUST_SYSROOT=$(rustc --print sysroot)
+          echo "--------------11111-------------"
+          echo "ldflags: $LDFLAGS"
+          echo "rustenv: $RUSTENV"
           gn gen "build-$V8_OS-$V8_ARCH"
-          unset LDFLAGS RUSTFLAGS RUSTENV
-          export LDFLAGS=""
-          export RUSTFLAGS=""
-          export RUSTENV=""
+          echo "--------------22222-------------"
+          echo "ldflags: $LDFLAGS"
+          echo "rustenv: $RUSTENV"
           ninja -j 4 v8_monolith -C "build-$V8_OS-$V8_ARCH"
+          echo "--------------33333-------------"
+          echo "ldflags: $LDFLAGS"
+          echo "rustenv: $RUSTENV"
+          echo "-----------------------------------"
       - name: V8 logs
         run: |
           export PATH="$PATH:$GITHUB_WORKSPACE/depot_tools"
