@@ -34,4 +34,6 @@ jobs:
           git checkout $V8_VERSION
           gclient sync
           echo "-------------------------------------------"
-          cat ./build/rust/gni_impl/rustc_wrapper.py
+          ls ./build/rust
+          echo "-------------------------------------------"
+          cat ./build/rust/std/BUILD.gn
