@@ -44,6 +44,7 @@ jobs:
           export RUSTC_BOOTSTRAP=1
           export LDFLAGS=""
           export RUSTFLAGS=""
+          export RUSTENV=""
           gclient
           fetch v8
           cd $GITHUB_WORKSPACE/v8
