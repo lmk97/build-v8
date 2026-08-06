@@ -25,65 +25,13 @@ jobs:
           path: ${{ github.event.repository.name }}
       - name: V8 fetch and build
         run: |
-          wget https://apt.llvm.org/llvm.sh
-          chmod +x llvm.sh
-          sudo ./llvm.sh 23
-          sudo apt install -y libclang-23-dev llvm-23-dev
-          sudo mkdir -p "/usr/lib/llvm-23/lib/clang/23/lib/aarch64-unknown-linux-gnu"
-          sudo cp -f "/usr/lib/llvm-23/lib/clang/23/lib/linux/libclang_rt.builtins-aarch64.a" "/usr/lib/llvm-23/lib/clang/23/lib/aarch64-unknown-linux-gnu/libclang_rt.builtins.a"
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-          rustup target add aarch64-unknown-linux-gnu
-          rustup component add rustfmt
-          cargo install bindgen-cli
-          mkdir -p "$HOME/.cargo/lib"
-          ln -sf "/usr/lib/llvm-23/lib/libclang.so" "$HOME/.cargo/lib/libclang.so"
           git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
           export DEPOT_TOOLS_METRICS=0
-          export PATH="$PATH:$HOME/.cargo/env:$GITHUB_WORKSPACE/depot_tools"
-          export LIBCLANG_PATH=/usr/lib/llvm-23/lib
-          export RUSTC_BOOTSTRAP=1
+          export PATH="$PATH:$GITHUB_WORKSPACE/depot_tools"
           gclient
           fetch v8
           cd $GITHUB_WORKSPACE/v8
           git checkout $V8_VERSION
           gclient sync
-          mkdir "build-$V8_OS-$V8_ARCH"
-          cp "../${{ github.event.repository.name }}/$V8_OS-$V8_ARCH.gn" "build-$V8_OS-$V8_ARCH/args.gn"
-          echo "clang_base_path=\"/usr/lib/llvm-23\"" >> "build-$V8_OS-$V8_ARCH/args.gn"
-          echo "rust_sysroot_absolute=\"$(rustc --print sysroot)\"" >> "build-$V8_OS-$V8_ARCH/args.gn"
-          echo "rust_bindgen_root=\"$HOME/.cargo\"" >> "build-$V8_OS-$V8_ARCH/args.gn"
-          echo "rust_force_head_revision=true" >> "build-$V8_OS-$V8_ARCH/args.gn"
-          echo "rustc_version=\"$(rustc -V)\"" >> "build-$V8_OS-$V8_ARCH/args.gn"
-          export RUST_SYSROOT=$(rustc --print sysroot)
-          echo "--------------11111-------------"
-          echo "ldflags: $LDFLAGS"
-          echo "rustenv: $RUSTENV"
-          gn gen "build-$V8_OS-$V8_ARCH"
-          echo "--------------22222-------------"
-          echo "ldflags: $LDFLAGS"
-          echo "rustenv: $RUSTENV"
-          ninja -j 4 v8_monolith -C "build-$V8_OS-$V8_ARCH"
-          echo "--------------33333-------------"
-          echo "ldflags: $LDFLAGS"
-          echo "rustenv: $RUSTENV"
-          echo "-----------------------------------"
-      - name: V8 logs
-        run: |
-          export PATH="$PATH:$GITHUB_WORKSPACE/depot_tools"
-          cd $GITHUB_WORKSPACE/v8
-          echo "----------------- os-release      -----------------"
-          cat /etc/os-release
-          echo "----------------- uname           -----------------"
-          uname -a
-          echo "----------------- clang version   -----------------"
-          /usr/lib/llvm-23/bin/clang -v
-          echo "----------------- sysroots.json   -----------------"
-          cat build/linux/sysroot_scripts/sysroots.json
-          echo "----------------- gn args list    -----------------"
-          gn args "build-$V8_OS-$V8_ARCH" --list
-          echo "----------------- gn ls //:*      -----------------"
-          gn ls "build-$V8_OS-$V8_ARCH" //:*
-          echo "----------------- gn desc         -----------------"
-          gn desc "build-$V8_OS-$V8_ARCH" //:v8_monolith
-          echo "----------------- find *libc++*.a -----------------"
-          find "build-$V8_OS-$V8_ARCH" -name "*libc++*.a"
+          echo "-------------------------------------------"
+          cat ./build/rust/gni_impl/rustc_wrapper.py
