@@ -42,10 +42,6 @@ jobs:
           export PATH="$PATH:$HOME/.cargo/env:$GITHUB_WORKSPACE/depot_tools"
           export LIBCLANG_PATH=/usr/lib/llvm-23/lib
           export RUSTC_BOOTSTRAP=1
-          unset LDFLAGS RUSTFLAGS RUSTENV
-          export LDFLAGS=""
-          export RUSTFLAGS=""
-          export RUSTENV=""
           gclient
           fetch v8
           cd $GITHUB_WORKSPACE/v8
@@ -59,6 +55,10 @@ jobs:
           echo "rust_force_head_revision=true" >> "build-$V8_OS-$V8_ARCH/args.gn"
           echo "rustc_version=\"$(rustc -V)\"" >> "build-$V8_OS-$V8_ARCH/args.gn"
           export RUST_SYSROOT=$(rustc --print sysroot)
+          unset LDFLAGS RUSTFLAGS RUSTENV
+          export LDFLAGS=""
+          export RUSTFLAGS=""
+          export RUSTENV=""
           gn gen "build-$V8_OS-$V8_ARCH"
           ninja -j 4 v8_monolith -C "build-$V8_OS-$V8_ARCH"
       - name: V8 logs
