@@ -33,6 +33,7 @@ jobs:
           cd $GITHUB_WORKSPACE/v8
           git checkout $V8_VERSION
           gclient sync
+          build/linux/sysroot_scripts/install-sysroot.py --arch=arm64
           mkdir "target-$V8_OS-$V8_ARCH"
           cp "../${{ github.event.repository.name }}/$V8_OS-$V8_ARCH.gn" "target-$V8_OS-$V8_ARCH/args.gn"
           gn gen "target-$V8_OS-$V8_ARCH"
