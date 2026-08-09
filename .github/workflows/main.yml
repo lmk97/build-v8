@@ -23,6 +23,10 @@ jobs:
         uses: actions/checkout@v7
         with:
           path: ${{ github.event.repository.name }}
+      - name: MSVC cross-compilation
+        uses: step-security/msvc-dev-cmd@v1
+        with:
+          arch: amd64_arm64
       - name: V8 fetch and build
         shell: pwsh
         run: |
@@ -42,6 +46,5 @@ jobs:
           gclient sync
           mkdir "target-$env:V8_OS-$env:V8_ARCH"
           cp "..\${{ github.event.repository.name }}\$env:V8_OS-$env:V8_ARCH.gn" "target-$env:V8_OS-$env:V8_ARCH\args.gn"
-          Add-Content -Path "target-$env:V8_OS-$env:V8_ARCH\args.gn" -Value 'v8_snapshot_toolchain = "//build/toolchain/win:clang_x64_v8_arm64"' -Encoding utf8
           gn gen "target-$env:V8_OS-$env:V8_ARCH"
           ninja -j 4 v8_monolith -C "target-$env:V8_OS-$env:V8_ARCH"
