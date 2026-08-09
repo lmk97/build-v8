@@ -34,6 +34,7 @@ jobs:
           git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
           $env:PATH="$env:PATH;$env:GITHUB_WORKSPACE\depot_tools"
           $env:DEPOT_TOOLS_METRICS="0"
+          $env:DEPOT_TOOLS_WIN_TOOLCHAIN="0"
           gclient
           fetch v8
           cd $env:GITHUB_WORKSPACE/v8
