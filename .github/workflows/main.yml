@@ -24,6 +24,9 @@ jobs:
         with:
           path: ${{ github.event.repository.name }}
       - name: V8 fetch and build
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64_arm64
         shell: pwsh
         run: |
           git config --global core.autocrlf false
