@@ -30,11 +30,11 @@ jobs:
           $env:PATH="$env:PATH;$GITHUB_WORKSPACE\depot_tools"
           $env:DEPOT_TOOLS_METRICS="0"
           $env:DEPOT_TOOLS_WIN_TOOLCHAIN="0"
-          gclient
+          "$GITHUB_WORKSPACE\depot_tools\gclient"
           fetch v8
           cd $GITHUB_WORKSPACE/v8
           git checkout $V8_VERSION
-          gclient sync
+          "$GITHUB_WORKSPACE\depot_tools\gclient" sync
           mkdir "target-$V8_OS-$V8_ARCH"
           cp "..\${{ github.event.repository.name }}\$V8_OS-$V8_ARCH.gn" "target-$V8_OS-$V8_ARCH\args.gn"
           gn gen "target-$V8_OS-$V8_ARCH"
