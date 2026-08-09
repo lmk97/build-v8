@@ -14,7 +14,7 @@ defaults:
 
 jobs:
   build-on-windows-aarch64:
-    runs-on: windows-2022
+    runs-on: windows-11-arm
     env:
       V8_OS: windows
       V8_ARCH: aarch64
@@ -34,10 +34,6 @@ jobs:
           git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
           $env:PATH="$env:PATH;$env:GITHUB_WORKSPACE\depot_tools"
           $env:DEPOT_TOOLS_METRICS="0"
-          $env:DEPOT_TOOLS_WIN_TOOLCHAIN="0"
-          echo "----------------------------------------"
-          ls "$env:GITHUB_WORKSPACE\depot_tools"
-          echo "----------------------------------------"
           gclient
           fetch v8
           cd $env:GITHUB_WORKSPACE/v8
