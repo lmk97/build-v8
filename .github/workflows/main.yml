@@ -26,6 +26,11 @@ jobs:
       - name: V8 fetch and build
         shell: pwsh
         run: |
+          git config --global core.autocrlf false
+          git config --global core.filemode false
+          git config --global core.fscache true
+          git config --global core.preloadindex true
+          git config --global depot-tools.allowGlobalGitConfig true
           git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
           $env:PATH="$env:PATH;$env:GITHUB_WORKSPACE\depot_tools"
           $env:DEPOT_TOOLS_METRICS="0"
@@ -36,9 +41,9 @@ jobs:
           gclient
           fetch v8
           cd $env:GITHUB_WORKSPACE/v8
-          git checkout $V8_VERSION
+          git checkout $env:V8_VERSION
           gclient sync
-          mkdir "target-$V8_OS-$V8_ARCH"
-          cp "..\${{ github.event.repository.name }}\$V8_OS-$V8_ARCH.gn" "target-$V8_OS-$V8_ARCH\args.gn"
-          gn gen "target-$V8_OS-$V8_ARCH"
-          ninja -j 4 v8_monolith -C "target-$V8_OS-$V8_ARCH"
+          mkdir "target-$env:V8_OS-$env:V8_ARCH"
+          cp "..\${{ github.event.repository.name }}\$env:V8_OS-$env:V8_ARCH.gn" "target-$env:V8_OS-$env:V8_ARCH\args.gn"
+          gn gen "target-$env:V8_OS-$env:V8_ARCH"
+          ninja -j 4 v8_monolith -C "target-$env:V8_OS-$env:V8_ARCH"
