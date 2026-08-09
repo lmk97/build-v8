@@ -35,11 +35,11 @@ jobs:
           git config --global core.fscache true
           git config --global core.preloadindex true
           git config --global depot-tools.allowGlobalGitConfig true
-          gclient
+          gclient.bat
           fetch v8
           cd $GITHUB_WORKSPACE/v8
           git checkout $V8_VERSION
-          gclient sync
+          gclient.bat sync
           mkdir "target-$V8_OS-$V8_ARCH"
           cp "../${{ github.event.repository.name }}/$V8_OS-$V8_ARCH.gn" "target-$V8_OS-$V8_ARCH/args.gn"
           gn gen "target-$V8_OS-$V8_ARCH"
