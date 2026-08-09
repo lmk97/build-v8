@@ -13,10 +13,10 @@ defaults:
     shell: bash
 
 jobs:
-  build-on-linux-aarch64:
-    runs-on: ubuntu-22.04
+  build-on-windows-aarch64:
+    runs-on: windows-11-arm
     env:
-      V8_OS: linux
+      V8_OS: windows
       V8_ARCH: aarch64
     steps:
       - name: Source code checkout
@@ -33,14 +33,7 @@ jobs:
           cd $GITHUB_WORKSPACE/v8
           git checkout $V8_VERSION
           gclient sync
-          build/linux/sysroot_scripts/install-sysroot.py --arch=arm64
           mkdir "target-$V8_OS-$V8_ARCH"
           cp "../${{ github.event.repository.name }}/$V8_OS-$V8_ARCH.gn" "target-$V8_OS-$V8_ARCH/args.gn"
           gn gen "target-$V8_OS-$V8_ARCH"
           ninja -j 4 v8_monolith -C "target-$V8_OS-$V8_ARCH"
-          echo "---------------------- file    ----------------------"
-          file "target-$V8_OS-$V8_ARCH/obj/libv8_monolith.a"
-          echo "---------------------- readelf ----------------------"
-          readelf -h "target-$V8_OS-$V8_ARCH/obj/libv8_monolith.a"
-          echo "---------------------- objdump ----------------------"
-          objdump -f "target-$V8_OS-$V8_ARCH/obj/libv8_monolith.a" | grep architecture
