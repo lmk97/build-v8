@@ -24,12 +24,12 @@ jobs:
         with:
           path: ${{ github.event.repository.name }}
       - name: V8 fetch and build
-        shell: pwsh
+        shell: bash
         run: |
           git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
-          $env:PATH = "$env:PATH;$GITHUB_WORKSPACE/depot_tools"
-          $env:DEPOT_TOOLS_METRICS = "0"
-          $env:DEPOT_TOOLS_WIN_TOOLCHAIN = "0"
+          export PATH="$PATH:$GITHUB_WORKSPACE/depot_tools"
+          export DEPOT_TOOLS_METRICS="0"
+          export DEPOT_TOOLS_WIN_TOOLCHAIN="0"
           gclient
           fetch v8
           cd $GITHUB_WORKSPACE/v8
