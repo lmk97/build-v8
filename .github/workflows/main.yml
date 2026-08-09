@@ -35,6 +35,8 @@ jobs:
           $env:PATH="$env:PATH;$env:GITHUB_WORKSPACE\depot_tools"
           $env:DEPOT_TOOLS_METRICS="0"
           $env:DEPOT_TOOLS_WIN_TOOLCHAIN="0"
+          Invoke-WebRequest -Uri "https://go.microsoft.com/fwlink/p/?linkid=2286561" -OutFile "$env:RUNNER-TEMP\WinSdkSetup.exe"
+          Start-Process -Wait -FilePath "$env:RUNNER-TEMP\WinSdkSetup.exe" -ArgumentList @("/features", "OptionId.WindowsDesktopDebuggers", "/quiet", "/norestart")
           gclient
           fetch v8
           cd $env:GITHUB_WORKSPACE/v8
