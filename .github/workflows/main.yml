@@ -36,7 +36,7 @@ jobs:
           $env:DEPOT_TOOLS_METRICS="0"
           $env:DEPOT_TOOLS_WIN_TOOLCHAIN="0"
           Invoke-WebRequest -Uri "https://github.com/jonathanmarler/msvcup/releases/latest/download/msvcup-windows-amd64.exe" -OutFile "$env:TEMP\msvcup.exe"
-          "$env:TEMP\msvcup.exe" install sdk-10.0.26100.0
+          & "$env:TEMP\msvcup.exe" install sdk-10.0.26100.0
           gclient
           fetch v8
           cd $env:GITHUB_WORKSPACE/v8
