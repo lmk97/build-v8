@@ -14,7 +14,7 @@ defaults:
 
 jobs:
   build-on-linux-aarch64:
-    runs-on: ubuntu-22.04-arm
+    runs-on: ubuntu-22.04
     env:
       V8_OS: linux
       V8_ARCH: aarch64
@@ -35,5 +35,6 @@ jobs:
           gclient sync
           mkdir "build-$V8_OS-$V8_ARCH"
           cp "../${{ github.event.repository.name }}/$V8_OS-$V8_ARCH.gn" "build-$V8_OS-$V8_ARCH/args.gn"
+          build/linux/sysroot_scripts/install-sysroot.py --arch=arm64
           gn gen "build-$V8_OS-$V8_ARCH"
           ninja -j 4 v8_monolith -C "build-$V8_OS-$V8_ARCH"
