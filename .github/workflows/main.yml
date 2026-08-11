@@ -13,10 +13,10 @@ defaults:
     shell: bash
 
 jobs:
-  build-on-windows-aarch64:
-    runs-on: windows-11-arm
+  build-on-linux-aarch64:
+    runs-on: ubuntu-22.04-arm
     env:
-      V8_OS: windows
+      V8_OS: linux
       V8_ARCH: aarch64
     steps:
       - name: Checkout source code
@@ -24,26 +24,16 @@ jobs:
         with:
           path: ${{ github.event.repository.name }}
       - name: V8 fetch and build
-        shell: pwsh
         run: |
-          git config --global core.autocrlf false
-          git config --global core.filemode false
-          git config --global core.fscache true
-          git config --global core.preloadindex true
-          git config --global depot-tools.allowGlobalGitConfig true
           git clone --depth 1 https://chromium.googlesource.com/chromium/tools/depot_tools.git
-          $env:PATH="$env:PATH;$env:GITHUB_WORKSPACE\depot_tools"
-          $env:DEPOT_TOOLS_METRICS="0"
-          $env:DEPOT_TOOLS_WIN_TOOLCHAIN="0"
-          $X64DebuggersDir = "C:\Program Files (x86)\Windows Kits\10\Debuggers\x64"
-          $Arm64DebuggersDir = "C:\Program Files (x86)\Windows Kits\10\Debuggers\arm64"
-          cp "$Arm64DebuggersDir\dbghelp.dll" "$X64DebuggersDir\dbghelp.dll"
+          export PATH="$PATH:$GITHUB_WORKSPACE/depot_tools"
+          export DEPOT_TOOLS_METRICS="0"
           gclient
           fetch v8
-          cd $env:GITHUB_WORKSPACE/v8
-          git checkout $env:V8_VERSION
+          cd $GITHUB_WORKSPACE/v8
+          git checkout $V8_VERSION
           gclient sync
-          mkdir "target-$env:V8_OS-$env:V8_ARCH"
-          cp "..\${{ github.event.repository.name }}\$env:V8_OS-$env:V8_ARCH.gn" "target-$env:V8_OS-$env:V8_ARCH\args.gn"
-          gn gen "target-$env:V8_OS-$env:V8_ARCH"
-          ninja -j 4 v8_monolith -C "target-$env:V8_OS-$env:V8_ARCH"
+          mkdir "build-$V8_OS-$V8_ARCH"
+          cp "../${{ github.event.repository.name }}/$V8_OS-$V8_ARCH.gn" "build-$V8_OS-$V8_ARCH/args.gn"
+          gn gen "build-$V8_OS-$V8_ARCH"
+          ninja -j 4 v8_monolith -C "build-$V8_OS-$V8_ARCH"
