@@ -26,7 +26,9 @@ jobs:
       - name: V8 fetch and build
         run: |
           wget https://github.com/llvm/llvm-project/releases/download/llvmorg-23.1.0-rc3/LLVM-23.1.0-rc3-Linux-ARM64.tar.xz
-          tar -Jxf LLVM-23.1.0-rc3-Linux-ARM64.tar.xz -C ./llvm-23 --strip-components=1
+          mkdir ./llvm-23
+          tar -Jxf ./LLVM-23.1.0-rc3-Linux-ARM64.tar.xz -C ./llvm-23 --strip-components=1
+          rm -rf ./LLVM-23.1.0-rc3-Linux-ARM64.tar.xz
           git clone --depth 1 https://chromium.googlesource.com/chromium/tools/depot_tools.git
           export PATH="$PATH:$GITHUB_WORKSPACE/depot_tools"
           export DEPOT_TOOLS_METRICS="0"
