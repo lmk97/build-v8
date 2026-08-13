@@ -29,7 +29,7 @@ jobs:
           mkdir ./llvm-23
           tar -Jxf ./LLVM-23.1.0-rc3-Linux-ARM64.tar.xz -C ./llvm-23 --strip-components=1
           rm -rf ./LLVM-23.1.0-rc3-Linux-ARM64.tar.xz
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           rustup component add rustfmt
           cargo install bindgen-cli
           mkdir -p "$HOME/.cargo/lib"
