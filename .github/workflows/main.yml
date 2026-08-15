@@ -32,8 +32,6 @@ jobs:
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           rustup component add rustfmt
           cargo install bindgen-cli
-          mkdir -p "$HOME/.cargo/lib"
-          ln -sf "$GITHUB_WORKSPACE/llvm-23/lib/libclang.so" "$HOME/.cargo/lib/libclang.so"
           git clone --depth 1 https://chromium.googlesource.com/chromium/tools/depot_tools.git
           export PATH="$PATH:$HOME/.cargo/env:$GITHUB_WORKSPACE/depot_tools"
           export DEPOT_TOOLS_METRICS="0"
@@ -50,7 +48,7 @@ jobs:
           echo "rust_sysroot_absolute=\"$(rustc --print sysroot)\"" >> "build-$V8_OS-$V8_ARCH/args.gn"
           echo "rust_bindgen_root=\"$HOME/.cargo\"" >> "build-$V8_OS-$V8_ARCH/args.gn"
           echo "rust_force_head_revision=true" >> "build-$V8_OS-$V8_ARCH/args.gn"
-          echo "rustc_version=\"$(rustc --version | cut -d' ' -f2)\"" >> "build-$V8_OS-$V8_ARCH/args.gn"
+          echo "rustc_version=\"$(rustc --version | cut -d ' ' -f 2)\"" >> "build-$V8_OS-$V8_ARCH/args.gn"
           export RUST_SYSROOT=$(rustc --print sysroot)
           build/linux/sysroot_scripts/install-sysroot.py --arch=arm64
           gn gen "build-$V8_OS-$V8_ARCH"
