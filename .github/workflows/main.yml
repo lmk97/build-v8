@@ -34,7 +34,7 @@ jobs:
           cargo install bindgen-cli
           git clone --depth 1 https://chromium.googlesource.com/chromium/tools/depot_tools.git
           export PATH="$PATH:$GITHUB_WORKSPACE/depot_tools"
-          export LIBCLANG_PATH="$GITHUB_WORKSPACE/llvm-23/lib"
+          export LIBCLANG_PATH="$GITHUB_WORKSPACE/llvm-23/bin"
           export DEPOT_TOOLS_METRICS="0"
           export RUSTC_BOOTSTRAP="1"
           gclient
