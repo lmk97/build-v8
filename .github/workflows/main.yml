@@ -32,9 +32,10 @@ jobs:
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           rustup component add rustfmt
           cargo install bindgen-cli
+          mkdir -p "$HOME/.cargo/lib"
+          ln -sf "$GITHUB_WORKSPACE/llvm-23/lib/libclang.so" "$HOME/.cargo/lib/libclang.so"
           git clone --depth 1 https://chromium.googlesource.com/chromium/tools/depot_tools.git
           export PATH="$PATH:$GITHUB_WORKSPACE/depot_tools"
-          export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$GITHUB_WORKSPACE/llvm-23/lib"
           export LIBCLANG_PATH="$GITHUB_WORKSPACE/llvm-23/lib"
           export DEPOT_TOOLS_METRICS="0"
           export RUSTC_BOOTSTRAP="1"
