@@ -51,7 +51,6 @@ jobs:
           echo "rust_bindgen_root=\"$HOME/.cargo\"" >> "build-$V8_OS-$V8_ARCH/args.gn"
           echo "rust_force_head_revision=true" >> "build-$V8_OS-$V8_ARCH/args.gn"
           echo "rustc_version=\"$(rustc --version | cut -d ' ' -f 2)\"" >> "build-$V8_OS-$V8_ARCH/args.gn"
-          export RUST_SYSROOT=$(rustc --print sysroot)
           build/linux/sysroot_scripts/install-sysroot.py --arch=arm64
           gn gen "build-$V8_OS-$V8_ARCH"
           ninja -j 4 v8_monolith -C "build-$V8_OS-$V8_ARCH"
